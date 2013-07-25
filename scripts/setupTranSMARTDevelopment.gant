@@ -77,6 +77,9 @@ pg_database                      = properties['postgres.workingdb']
 pg_host                          = properties['postgres.host']
 pg_port                          = properties['postgres.port']
 
+db_git_repos                     = properties['db.git.repos']
+db_git_branch                    = properties['db.git.branch']
+
 webapps_subdir                   = 'applications'
 webapps_data                     = 'appdata'
 
@@ -239,6 +242,19 @@ def validateEnvironment() {
     dirValidation "locations.transmartuser.home", transmartuser_home
     /* }}} */
 
+    /* {{{ Validation of transmart-DB git repository */
+    if (!db_git_repos) {
+        db_git_repos = 'git://github.com/transmart/transmartApp-DB.git'
+    }
+    if (!db_git_branch) {
+        db_git_branch = 'postgresMigrate'
+    }
+    result = commandStepN([tools_git_cmd, 'ls-remote', '--exit-code', db_git_repos, db_git_branch], failOnError: false)
+    if (!result) {
+        fail "Could not validate the git repos/head pair '%s'/'%s'", db_git_repos, db_git_branch
+    }
+    /* }}} */
+
     info "Everything validated, let's start"
 }
 
@@ -289,8 +305,7 @@ target(install: "The installation script") {
 //    git checkout -b postgresMigrate origin/postgresMigrate
 //    Build initiial PostgreSQL databases (for both transMart and i2b2)
 //    cd postgresql , then instructions in readme
-    gitStep("git://github.com/transmart/transmartApp-DB.git",
-            build_dir | "transmartApp-DB", "postgresMigrate", true)
+    gitStep(db_git_repos, build_dir | "transmartApp-DB", db_git_branch, true)
 
 //    There are 3 main steps to creating the transmart database:
 //    1.  Create the transmart schemas (and all objects not part of i2b2 or ETL)
