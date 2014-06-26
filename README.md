@@ -1,3 +1,11 @@
+# Project Discontinued
+
+*IMPORTANT NOTICE*: This project has been superseded by:
+
+1. For tranSMART 1.1, the [fork](https://github.com/transmart/transmartAppInstaller) at the tranSMART Foundation account
+2. For more recent versions, the _transmart-data_ repository, either the [original The Hyve repository](https://github.com/thehyve/transmart-data) or [tranSMART Foundation's fork](https://github.com/transmart/transmart-data).
+
+
 transmartAppInstaller meant for  tranSMART - translational medicine data mart
 Author : Pieter Lukasse  (pieter at thehyve.nl)
 
